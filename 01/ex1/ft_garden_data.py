@@ -32,25 +32,27 @@ class Plant:
         return f"{self.name}: {self.height}cm, {self.age} days old"
 
 
-def display_garden(plants: tuple) -> None:
+def display_garden(plants: list) -> None:
     """
     Prints the registry of all plants in the garden.
 
     Args:
-        plants (tuple): A fixed-size collection containing Plant objects.
+        plants (list): A variable-size collection containing Plant objects.
     """
     print("=== Garden Plant Registry ===")
-    for i in range(3):
-        print(plants[i])
+    for plant in plants:
+        print(plant)
 
 
 def main() -> None:
     """Main execution function to manage garden data."""
-    rose: Plant = Plant("Rose", 25, 30)
-    sunflower: Plant = Plant("Sunflower", 80, 45)
-    cactus: Plant = Plant("Cactus", 15, 120)
+    raw_data: list = [
+        {"name": "Rose", "height": 25, "age": 30},
+        {"name": "Sunflower", "height": 80, "age": 45},
+        {"name": "Cactus", "height": 15, "age": 120},
+    ]
 
-    garden_data: tuple = (rose, sunflower, cactus)
+    garden_data = [Plant(d["name"], d["height"], d["age"]) for d in raw_data]
 
     display_garden(garden_data)
 

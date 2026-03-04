@@ -41,9 +41,7 @@ class Plant:
 
 
 def simulate_week(plants: tuple, num_plants: int) -> None:
-    """
-    Simulates growth for N plants and shows individual results.
-    """
+    """Simulates growth for N plants and shows individual results."""
     initial_heights = [0] * num_plants
     for i in range(num_plants):
         initial_heights[i] = plants[i].height

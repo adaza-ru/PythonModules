@@ -42,20 +42,18 @@ class Plant:
 
 def main() -> None:
     """Streamlines plant creation by iterating over a data source."""
-    raw_data: tuple = (
-        ("Rose", 25, 30),
-        ("Oak", 200, 365),
-        ("Cactus", 5, 90),
-        ("Sunflower", 80, 45),
-        ("Fern", 15, 120),
-    )
+    raw_data: list = [
+        {"name": "Rose", "height": 25, "age": 30},
+        {"name": "Oak", "height": 200, "age": 365},
+        {"name": "Cactus", "height": 5, "age": 90},
+        {"name": "Sunflower", "height": 80, "age": 45},
+        {"name": "Fern", "height": 15, "age": 120}
+    ]
 
     print("=== Plant Factory Output ===")
 
-    for i in range(5):
-        name, height, age = raw_data[i]
-        new_plant: Plant = Plant(name, height, age)
-
+    for d in raw_data:
+        new_plant: Plant = Plant(d["name"], d["height"], d["age"])
         print(new_plant.get_info())
 
     print("\nTotal plants created: 5")

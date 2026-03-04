@@ -15,9 +15,11 @@ class Plant:
     """Base class in the plant family tree."""
 
     def __init__(self, name: str, height: int) -> None:
+        """x"""
         self.name: str = name
         self.height: int = height
         self.category: str = "regular"
+        self.score: int = height
 
     def grow(self, cm: int) -> None:
         """Increase height by cm."""
@@ -33,6 +35,128 @@ class FloweringPlant(Plant):
     """First level of inheritance."""
 
     def __init__(self, name: str, height: int, color: str) -> None:
+        """x"""
+        super().__init__(name, height)
+        self.color: str = color
+        self.category: str = "flowering"
+
+    def get_info(self) -> str:
+        """x"""
+        return super().get_info() + f" {self.color} flowers (blooming)"
+
+
+class PrizeFlower(FloweringPlant):
+    """Second level of inheritance."""
+
+    def __init__(
+        self, name: str, height: int, color: str, points: int,
+    ) -> None:
+        """x"""
+        super().__init__(name, height, color)
+        self.points: int = points
+        self.category: str = "prize flowers"
+        self.score: int = height + points * 4
+
+    def get_info(self) -> str:
+        """x"""
+        return super().get_info() + f" Prize points: {self.points}"
+
+
+class GardenManager:
+    """x"""
+
+    total_gardens = 0
+
+    class GardenStats:
+        """z"""
+
+        def __init__():
+            """x"""
+            pass
+
+    def __init__(self, name: str):
+        """x"""
+        self.name: str = name
+
+    @classmethod
+    def create_garden_network(cls, sus muertos):
+        """x"""
+        jardin: garden = jardin
+        GardenManager.total_gardens += 1
+        print(f"Total gardens: {GardenManager.total_gardens}")
+
+    @staticmethod
+    def print_header() -> None:
+        """x"""
+        print("=== Garden Management System Demo ===")
+
+
+def main() -> None:
+    """x"""
+    GardenManager.print_header()
+
+
+if __name__ == "__main__":
+    main()
+
+
+"""
+Build a comprehensive garden data analytics platform that processes and analyzes gar-
+den data. This system needs to handle complex data relationships and provide detailed
+analytics using nested components and inheritance chains.
+Requirements:
+• Create a GardenManager that can handle multiple gardens
+• Include a helper GardenStats inside your manager for calculating statistics
+• Include a method create_garden_network() that works on the manager type itself
+• Add utility functions that don’t need specific garden data
+• Show different types of methods: instance methods, class-level methods, and utility
+functions
+• Each garden should track plant collections and statistics
+• Use your nested statistics helper to calculate analytics
+• Organize everything within appropriate structures - avoid scattered global functions
+
+Example:
+Added Oak Tree to Alice's garden
+Added Rose to Alice's garden
+Added Sunflower to Alice's garden
+
+Alice is helping all plants grow...
+Oak Tree grew 1cm
+Rose grew 1cm
+Sunflower grew 1cm
+
+=== Alice's Garden Report ===
+Plants in garden:
+- Oak Tree: 101cm
+- Rose: 26cm, red flowers (blooming)
+- Sunflower: 51cm, yellow flowers (blooming), Prize points: 10
+
+Plants added: 3, Total growth: 3cm
+Plant types: 1 regular, 1 flowering, 1 prize flowers
+Height validation test: True
+Garden scores - Alice: 218, Bob: 92
+Total gardens managed: 2
+"""
+
+"""
+[class Plant:
+
+    def __init__(self, name: str, height: int) -> None:
+        self.name: str = name
+        self.height: int = height
+        self.category: str = "regular"
+
+    def grow(self, cm: int) -> None:
+        self.height += cm
+        print(f"{self.name} grew {cm}cm")
+
+    def get_info(self) -> str:
+        return f"- {self.name}: {self.height}cm"
+
+
+class FloweringPlant(Plant):
+
+    def __init__(self, name: str, height: int, color: str) -> None:
         super().__init__(name, height)
         self.color: str = color
         self.category: str = "flowering"
@@ -45,7 +169,6 @@ class FloweringPlant(Plant):
 
 
 class PrizeFlower(FloweringPlant):
-    """Second level of inheritance."""
 
     def __init__(
         self, name: str, height: int, color: str, points: int
@@ -62,16 +185,13 @@ class PrizeFlower(FloweringPlant):
 
 
 class GardenManager:
-    """Handles multiple gardens and overall analytics."""
 
     total_gardens: int = 0
 
     class GardenStats:
-        """Nested helper class exclusively for calculating statistics."""
 
         @staticmethod
         def calculate_score(plants: tuple) -> int:
-            """Calculate arbitrary score based on height and points."""
             score: int = 0
             for p in plants:
                 score += p.height
@@ -81,7 +201,6 @@ class GardenManager:
 
         @staticmethod
         def get_counts(plants: tuple) -> tuple:
-            """Tally the different types of plants."""
             reg: int = 0
             flow: int = 0
             prize: int = 0
@@ -101,12 +220,10 @@ class GardenManager:
         GardenManager.total_gardens += 1
 
     def add_plant(self, plant: Plant) -> None:
-        """Add a plant to the garden's collection."""
         self.plants += (plant,)
         print(f"Added {plant.name} to {self.owner}'s garden")
 
     def grow_all(self, cm: int) -> None:
-        """Help all plants in this specific garden grow."""
         print(f"\n{self.owner} is helping all plants grow...")
         for plant in self.plants:
             plant.grow(cm)
@@ -114,16 +231,13 @@ class GardenManager:
 
     @staticmethod
     def validate_height(height: int) -> bool:
-        """Utility function: doesn't need 'self' or 'cls'."""
         return height >= 0
 
     @classmethod
     def create_garden_network(cls, owner1: str, owner2: str) -> tuple:
-        """Class method acting as a factory for multiple gardens."""
         return (cls(owner1), cls(owner2))
 
     def generate_report(self) -> None:
-        """Generate full analytics report for this garden."""
         print(f"\n=== {self.owner}'s Garden Report ===")
         print("Plants in garden:")
 
@@ -177,3 +291,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+]
+"""
