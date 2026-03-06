@@ -19,7 +19,6 @@ class Plant:
         self.name: str = name
         self.height: int = height
         self.category: str = "regular"
-        self.score: int = height
 
     def grow(self, cm: int) -> None:
         """Increase height by cm."""
@@ -55,35 +54,59 @@ class PrizeFlower(FloweringPlant):
         super().__init__(name, height, color)
         self.points: int = points
         self.category: str = "prize flowers"
-        self.score: int = height + points * 4
 
     def get_info(self) -> str:
         """x"""
         return super().get_info() + f" Prize points: {self.points}"
 
+                        
+class Garden:
+    """x"""
+
+    total_gardens: int = 0
+
+    def __init__(self, name: str, owner: str) -> None:
+        """x"""
+        self.owner: str = owner
+        self.plants: list = []
+        self.name: str = name
+        Garden.count_garden()
+        
+    @classmethod
+    def count_garden(cls) -> None:
+        """x"""
+        cls.total_gardens += 1
+    
+    def add_plant_to_garden(self, plant: Plant) -> None:
+        """x"""
+        self.plants += [plant]
+
 
 class GardenManager:
     """x"""
 
-    total_gardens = 0
+    total_managers: int = 0
 
     class GardenStats:
-        """z"""
+        """x"""
 
-        def __init__():
+        def calculate_score(gardens: list):
             """x"""
-            pass
-
+            
     def __init__(self, name: str):
         """x"""
         self.name: str = name
+        self.gardens: list = []
+        GardenManager.create_garden_network()
 
     @classmethod
-    def create_garden_network(cls, sus muertos):
+    def create_garden_network(cls):
         """x"""
-        jardin: garden = jardin
-        GardenManager.total_gardens += 1
-        print(f"Total gardens: {GardenManager.total_gardens}")
+        cls.total_managers += 1
+
+    def add_garden_to_manager(self, garden: Garden) -> None:
+        """x"""
+        self.gardens += [garden]
 
     @staticmethod
     def print_header() -> None:
