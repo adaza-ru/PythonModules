@@ -59,15 +59,17 @@ def simulate_week(plants: tuple, num_plants: int) -> None:
     for i in range(num_plants):
         print(plants[i].get_info())
         diff = plants[i].height - initial_heights[i]
-        print(f"Growth for {plants[i].name}: +{diff} cm")
+        print(f"Growth for {plants[i].name}: +{diff} cm\n")
 
 
 def main() -> None:
     """Main execution entry point."""
     rose: Plant = Plant("Rose", 25, 30)
-    garden: tuple = (rose,)
+    cactus: Plant = Plant("Cactus", 80, 360)
+    poppy: Plant = Plant("Poppy", 40, 80)
+    garden: tuple = (rose, cactus, poppy)
 
-    simulate_week(garden, 1)
+    simulate_week(garden, 3)
 
 
 if __name__ == "__main__":
