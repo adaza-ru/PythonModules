@@ -1,16 +1,3 @@
-#!/usr/bin/env python3
-# ########################################################################### #
-#                                                                             #
-#                                                          :::      ::::::::  #
-#   ft_garden_analytics.py                               :+:      :+:    :+:  #
-#                                                      +:+ +:+         +:+    #
-#   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
-#                                                  +#+#+#+#+#+   +#+          #
-#   Created: 2026/03/04 01:43:03 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/03/11 14:12:34 by adaza-ru           ###   ########.fr      #
-#                                                                             #
-# ########################################################################### #
-
 class Plant:
     """Base class in the plant family tree."""
 
@@ -65,36 +52,37 @@ class PrizeFlower(FloweringPlant):
 
 
 class Garden:
-    """x"""
+    """Represents a garden containing multiple plants."""
 
     total_gardens: int = 0
 
     def __init__(self, name: str, manager: 'GardenManager') -> None:
-        """x"""
+        """Initialize a garden and link it to its manager."""
         self.plants: list[Plant] = []
         self.name: str = name
-        self.owner: str = manager.name
-        self.number_of_plants = 0
+        # RESTAURAMOS EL CONTADOR: Ya que no hay len(), lo necesitamos.
+        self.number_of_plants: int = 0 
         Garden.count_garden()
         manager.add_garden_to_manager(self)
 
+    def add_plant_to_garden(self, plant: Plant) -> None:
+        """Add a newly created plant to this garden."""
+        # ALTERNATIVA A APPEND: Sumamos una lista con otra
+        self.plants += [plant] 
+        # Aumentamos el contador manual
+        self.number_of_plants += 1 
+        print(f"{plant.name} grew in {self.name}'s garden")
+
     @classmethod
     def count_garden(cls) -> None:
-        """x"""
+        """Increment the global count of gardens."""
         cls.total_gardens += 1
-
-    def add_plant_to_garden(self, plant: Plant) -> None:
-        """x"""
-        self.plants += [plant]
-        self.number_of_plants += 1
-        print(f"{plant.name} grew in {self.name}'s garden")
 
 
 class GardenManager:
-    """x"""
+    """Manages multiple gardens and their statistics."""
 
     total_managers: int = 0
-    managers: list['GardenManager'] = []
 
     class GardenStats:
         """Handles statistical calculations for a manager's gardens."""
@@ -105,40 +93,40 @@ class GardenManager:
             total_score: int = 0
             for g in gardens:
                 for p in g.plants:
-                    if p.category == "prize flowers":
+                    if isinstance(p, PrizeFlower):
                         total_score += p.height + (p.points * 4)
                     else:
                         total_score += p.height
             return total_score
 
     def __init__(self, name: str) -> None:
-        """x"""
+        """Initialize the manager with a name and empty garden list."""
         self.name: str = name
         self.gardens: list[Garden] = []
         self.number_of_gardens: int = 0
         self.work_done: int = 0
         self.welcome()
-        GardenManager.managers += [self]
         GardenManager.create_garden_network()
 
-    def welcome(self):
-        """x"""
+    def welcome(self) -> None:
+        """Print a welcome message for the new manager."""
         print(f"Let's welcome our new Manager: {self.name}. ", end="")
 
     @classmethod
     def create_garden_network(cls) -> None:
-        """x"""
+        """Increment the global manager count and display it."""
         cls.total_managers += 1
         print(f"Number of managers: {cls.total_managers}")
 
     def add_garden_to_manager(self, garden: Garden) -> None:
-        """x"""
-        self.gardens += [garden]
+        """Add a garden to the manager's supervision."""
+        # ALTERNATIVA A APPEND
+        self.gardens += [garden] 
         self.number_of_gardens += 1
         print(f"{self.name} is managing {garden.name}'s garden")
 
-    def grow_plants(self):
-        """x"""
+    def grow_plants(self) -> None:
+        """Increase the height of all plants in all managed gardens."""
         print(f"{self.name} is helping all plants grow...")
         for g in self.gardens:
             for p in g.plants:
@@ -147,16 +135,19 @@ class GardenManager:
 
     @staticmethod
     def print_header() -> None:
-        """x"""
+        """Display the system's main header."""
         print("=== Garden Management System Demo ===")
 
     def create_report(self) -> None:
-        """x"""
+        """Generate a detailed report of all managed gardens and plants."""
         regular_plants: int = 0
         flowering_plants: int = 0
         prize_flowers: int = 0
         height_bool: bool = True
+        
         print(f"=== {self.name}'s Garden Report ===")
+        print(f"Managing {self.number_of_gardens} garden(s).")
+        
         for g in self.gardens:
             print(f"Plants in {g.name}'s garden:")
             for p in g.plants:
@@ -169,46 +160,50 @@ class GardenManager:
                     flowering_plants += 1
                 elif p.category == "prize flowers":
                     prize_flowers += 1
+                    
         total_plants: int = regular_plants + flowering_plants + prize_flowers
         print(f"Plants added: {total_plants}", end="")
         print(f", Total growth: {self.work_done}cm")
         print(f"Plant types: {regular_plants} regular, ", end="")
         print(f"{flowering_plants} flowering, ", end="")
-        print(f"{prize_flowers} prize flowers\n")
-        print(f"Height validation test: {height_bool}")
+        print(f"{prize_flowers} prize flowers")
+        print(f"Height validation test: {height_bool}\n")
 
 
 def main() -> None:
-    """x"""
+    """Run the main demonstration of the Garden Management System."""
     GardenManager.print_header()
+    
     bob: GardenManager = GardenManager("Bob")
     alice: GardenManager = GardenManager("Alice")
     print("")
+    
     garden_bob: Garden = Garden("Parque De Los Patos", bob)
     garden_alice: Garden = Garden("Parque Maria Zambrano", alice)
     print("")
+    
     Plant("Bamboo", 200, garden_bob)
     print("")
+    
     FloweringPlant("Poppy", 30, garden_alice, "red")
     Plant("Peyote", 30, garden_alice)
     PrizeFlower("Maria", 150, garden_alice, "green", 100)
     print("")
+    
     alice.grow_plants()
     print("")
+    
     alice.create_report()
-    print("Garden scores - ")
-    print(f"Alice: {alice.GardenStats.calculate_score}", end="")
-    print(f", Bob: {bob.GardenStats.calculate_score}")
+    
+    print("Garden scores - ", end="")
+    # Aquí faltaban los paréntesis y pasarle las listas de jardines:
+    alice_score: int = alice.GardenStats.calculate_score(alice.gardens)
+    bob_score: int = bob.GardenStats.calculate_score(bob.gardens)
+    
+    print(f"Alice: {alice_score}", end="")
+    print(f", Bob: {bob_score}")
     print(f"Total gardens managed: {Garden.total_gardens}")
 
 
 if __name__ == "__main__":
     main()
-
-"""
-• Include a helper GardenStats inside your manager for calculating statistics
-
-Garden scores - Alice: 218, Bob: 92
-Total gardens managed: 2
-
-"""
