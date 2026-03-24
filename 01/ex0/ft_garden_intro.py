@@ -1,28 +1,28 @@
 #!/usr/bin/env python3
 # ########################################################################### #
-#                                                                             #
+#   shebang: 1                                                                #
 #                                                          :::      ::::::::  #
 #   ft_garden_intro.py                                   :+:      :+:    :+:  #
 #                                                      +:+ +:+         +:+    #
-#   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
+#   By: adaza-ru <adaza-ru@student.42.fr>            +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/02/16 20:44:58 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/02/16 20:49:29 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/03/24 18:00:16 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
-def ft_garden_intro() -> None:
+def ft_garden_intro(plant: str, cm: int, days: int) -> None:
     """This function introduces a simple garden with a plant's information."""
-    plant: str = "Rose"
-    height: int = 25
-    age: int = 30
+    name: str = plant
+    height: int = cm
+    age: int = days
 
     print("=== Welcome to My Garden ===")
-    print(f"Plant: {plant}")
+    print(f"Plant: {name}")
     print(f"Height: {height}cm")
     print(f"Age: {age} days")
-    print("=== End of Program ===")
+    print("\n=== End of Program ===")
 
 
 if __name__ == "__main__":
-    ft_garden_intro()
+    ft_garden_intro("Rose", 25, 30)
