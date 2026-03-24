@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 # ########################################################################### #
-#                                                                             #
+#   shebang: 1                                                                #
 #                                                          :::      ::::::::  #
-#   ft_plant_age.py                                      :+:      :+:    :+:  #
+#   ft_water_reminder.py                                 :+:      :+:    :+:  #
 #                                                      +:+ +:+         +:+    #
-#   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
+#   By: adaza-ru <adaza-ru@student.42.fr>            +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/02/16 18:17:07 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/02/16 18:17:57 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/03/24 17:47:44 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
-def ft_plant_age():
-    age = int(input("Enter plant age in days: "))
-    if age > 60:
-        print("Plant is ready to harvest!")
+def ft_water_reminder() -> None:
+    days = int(input("Days since last watering: "))
+    if days > 2:
+        print("Water the plants!")
     else:
-        print("Plant needs more time to grow.")
+        print("Plants are fine")
