@@ -4,10 +4,10 @@
 #                                                          :::      ::::::::  #
 #   ft_plant_growth.py                                   :+:      :+:    :+:  #
 #                                                      +:+ +:+         +:+    #
-#   By: adaza-ru <adaza-ru@student.42.fr>            +#+  +:+       +#+       #
+#   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/03/04 00:05:25 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/03/24 19:01:26 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/03/31 15:56:10 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -30,7 +30,7 @@ class Plant:
         self.days: int = days
         self.growth_rate: float = growth
 
-    def get_info(self) -> str:
+    def __str__(self) -> str:
         """Return a user-friendly string representation of the plant."""
         return f"{self.name}: {round(self.height, 1)}cm, {self.days} days old"
 
@@ -50,11 +50,11 @@ def simulate_week(plant: Plant) -> None:
     print("=== Garden Plant Growth ===")
     for i in range(7):
         print(f"=== Day {i + 1} ===")
-        print(f"{plant.get_info()}")
+        print(plant)
         plant.grow()
         plant.age()
     diff: float = plant.height - initial_height
-    print(f"Growth for {plant.name}: {round(diff, 0)} cm\n")
+    print(f"Growth for {plant.name} this week: {round(diff)}cm\n")
 
 
 def main() -> None:

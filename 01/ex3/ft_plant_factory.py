@@ -4,10 +4,10 @@
 #                                                          :::      ::::::::  #
 #   ft_plant_factory.py                                  :+:      :+:    :+:  #
 #                                                      +:+ +:+         +:+    #
-#   By: adaza-ru <adaza-ru@student.42.fr>            +#+  +:+       +#+       #
+#   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/03/04 00:36:55 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/03/24 19:13:35 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/03/31 16:27:09 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -23,7 +23,7 @@ class Plant:
     """
 
     def __init__(self, name: str, height: float,
-                 growth: float, days: int) -> None:
+                 days: int, growth: float = 1.0) -> None:
         """Initialize the Plant with its specific data."""
         self.name: str = name
         self.height: float = height
@@ -32,7 +32,7 @@ class Plant:
 
     def __str__(self) -> str:
         """Return a user-friendly string representation of the plant."""
-        return f"{self.name}: {self.height}cm, {self.age} days old"
+        return f"{self.name}: {round(self.height)}cm, {self.days} days old"
 
     def grow(self) -> None:
         """Increase the height of the plant."""
@@ -45,19 +45,19 @@ class Plant:
 
 def main() -> None:
     """Streamlines plant creation by iterating over a data source."""
-    
-    plants: list[list[]] = ["Rose", "Oak", "Cactus", "Sunflower", "Fern",]
-	heights: list[float] = [25.0, 200.0, 5.0, 80.0, 15.0]
-	ages: list[int] = [30, 365, 90, 45, 120]
-    
+
+    plants: list[list[str] | list[float] | list[int]] = [
+            ["Rose", "Oak", "Cactus", "Sunflower", "Fern",],
+            [25.0, 200.0, 5.0, 80.0, 15.0],
+            [30, 365, 90, 45, 120]]
+    total_plants: int = 0
 
     print("=== Plant Factory Output ===")
-
-    for d in raw_data:
-        new_plant: Plant = Plant(**d)
-        print(new_plant.get_info())
-
-    print("\nTotal plants created: 5")
+    for n, h, d in zip(*plants):
+        new_plant: Plant = Plant(n, h, d)
+        print(new_plant)
+        total_plants += 1
+    print(f"\nTotal plants created: {total_plants}")
 
 
 if __name__ == "__main__":
