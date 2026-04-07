@@ -12,7 +12,6 @@
 # ########################################################################### #
 
 def ft_garden_intro(plant: str, cm: int, days: int) -> None:
-    """This function introduces a simple garden with a plant's information."""
     name: str = plant
     height: int = cm
     age: int = days

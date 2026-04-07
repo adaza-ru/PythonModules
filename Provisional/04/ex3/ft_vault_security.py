@@ -1,56 +1,44 @@
-from typing import Tuple
+from typing import Tuple, Union, TextIO
 
 
 def secure_archive(
-    filename: str,
-    mode: str = "r",
-    content: str = ""
+    filename: str, 
+    action: Union[str, int] = 'r', 
+    content: str = ''
 ) -> Tuple[bool, str]:
     """
-    Provides safe access to files for reading or writing.
-
-    Args:
-        filename: The path to the file.
-        mode: The operation mode ('r' for read, 'w' for write).
-        content: The data to write if mode is 'w'.
-
-    Returns:
-        A tuple (Success, Data/Error Message).
+    Función de seguridad que pasa mypy --strict.
     """
     try:
-        with open(filename, mode, encoding="utf-8") as file_handle:
-            if mode == "w":
-                file_handle.write(content)
-                return True, "Content successfully written to file"
+        if action == 'r' or action == 0:
+            with open(filename, 'r') as f:
+                data: str = f.read()
+            return (True, data)
 
-            data: str = file_handle.read()
-            return True, data
+        elif action == 'w' or action == 1:
+            with open(filename, 'w') as f:
+                f.write(content)
+            return (True, "Content successfully written to file")
 
-    except OSError as error:
-        return False, str(error)
+        else:
+            return (False, "Invalid action mode.")
+
+    except Exception as e:
+        return (False, str(e))
 
 
-def main() -> None:
-    """Demonstrates the security protocols of the vault."""
+def test_vault() -> None:
+    """Función de prueba para evitar código suelto en el top-level."""
     print("=== Cyber Archives Security ===")
 
-    print("\nUsing 'secure_archive' to read from a nonexistent file:")
-    print(secure_archive("/not/existing/file"))
+    res1: Tuple[bool, str] = secure_archive('/not/existing/file', 'r')
+    print(f"Using 'secure_archive' to read from a nonexistent file:\n{res1}")
 
-    print("\nUsing 'secure_archive' to read from an inaccessible file:")
-    print(secure_archive("/etc/master.passwd"))
+    _: Tuple[bool, str] = secure_archive('ancient_fragment.txt', 'w', "[FRAGMENT 001] Digital preservation protocols\n")
 
-    secure_archive("vault_test.txt", "w", "Data security protocol 2087")
-
-    print("\nUsing 'secure_archive' to read from a regular file:")
-    result = secure_archive("vault_test.txt", "r")
-    print(result)
-
-    if result[0]:
-        print("\nUsing 'secure_archive' to"
-              " write previous content to a new file:")
-        print(secure_archive("backup_vault.txt", "w", result[1]))
+    res2: Tuple[bool, str] = secure_archive('ancient_fragment.txt', 'r')
+    print(f"Using 'secure_archive' to read from a regular file:\n{res2}")
 
 
 if __name__ == "__main__":
-    main()
+    test_vault()

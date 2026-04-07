@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Exercise 0: Plant introductory script.
-This script demonstrates the basic structure of a Python program.
-"""
 
 def main() -> None:
     """Main function to display basic plant information."""

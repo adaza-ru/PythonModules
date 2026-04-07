@@ -1,89 +1,60 @@
 import sys
-from typing import IO, List
-
-
-def transform_data(content: str) -> str:
-    """
-    Appends the 2087-compatible character '#' to each line of the content.
-
-    Args:
-        content: The raw string content to transform.
-
-    Returns:
-        The transformed string with '#' at the end of each line.
-    """
-    lines: List[str] = content.splitlines()
-    transformed: str = "".join([f"{line}#\n" for line in lines])
-    return transformed
-
-
-def save_archive(filename: str, content: str) -> None:
-    """
-    Saves the provided content to a file, overwriting it if it exists.
-
-    Args:
-        filename: Target filename.
-        content: Data to be written.
-    """
-    print(f"Saving data to '{filename}'")
-    file_handle: IO[str]
-    try:
-        file_handle = open(filename, "w", encoding="utf-8")
-        try:
-            file_handle.write(content)
-        finally:
-            file_handle.close()
-        print(f"Data saved in file '{filename}'.")
-    except OSError as error:
-        print(f"Error saving to file '{filename}': {error}")
-
-
-def process_recovery(filename: str) -> str | None:
-    """
-    Reads the file and displays its original content.
-
-    Returns:
-        The content of the file if successful, None otherwise.
-    """
-    print("=== Cyber Archives Recovery & Preservation ===")
-    print(f"Accessing file '{filename}'")
-
-    file_handle: IO[str]
-    try:
-        file_handle = open(filename, "r", encoding="utf-8")
-        try:
-            content: str = file_handle.read()
-            print("---\n" + content + "---")
-            return content
-        finally:
-            file_handle.close()
-            print(f"File '{filename}' closed.")
-    except OSError as error:
-        print(f"Error opening file '{filename}': {error}")
-        return None
+from typing import List, TextIO
 
 
 def main() -> None:
-    """Main execution flow for archive creation and transformation."""
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <file>")
+    args: List[str] = sys.argv
+    if len(args) != 2:
+        print("Usage: ft_archive_creation.py <file>")
         return
 
-    source_file: str = sys.argv[1]
-    original_content: str | None = process_recovery(source_file)
+    filename: str = args[1]
+    print("=== Cyber Archives Recovery & Preservation ===")
+    print(f"Accessing file '{filename}'")
 
-    if original_content is None:
+    content: str = ""
+    try:
+        f: TextIO = open(filename, 'r')
+        content = f.read()
+        print("---")
+        print(content, end="")
+        if content and not content.endswith('\n'):
+            print()
+        print("---")
+        f.close()
+        print(f"File '{filename}' closed.")
+    except Exception as e:
+        print(f"Error opening file '{filename}': {str(e)}")
         return
 
     print("Transform data:")
-    new_content: str = transform_data(original_content)
-    print("---\n" + new_content + "---")
+    print("---")
 
-    dest_file: str = input("Enter new file name (or empty): ")
-    if dest_file.strip():
-        save_archive(dest_file, new_content)
-    else:
+    lines: List[str] = content.split('\n')
+    if lines and lines[-1] == '':
+        lines.pop()
+
+    transformed_content: str = ""
+    for line in lines:
+        transformed_content += line + "#\n"
+
+    print(transformed_content, end="")
+    print("---")
+
+    new_file: str = input("Enter new file name (or empty): ")
+    if not new_file:
         print("Not saving data.")
+        return
+
+    print(f"Saving data to '{new_file}'")
+    try:
+        out_f: TextIO = open(new_file, 'w')
+        out_f.write(transformed_content)
+        out_f.close()
+        print(f"Data saved in file '{new_file}'.")
+    except Exception as e:
+        print(f"Error opening file '{new_file}': {str(e)}")
+        print("Data not saved.")
 
 
 if __name__ == "__main__":
