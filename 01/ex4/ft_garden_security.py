@@ -1,75 +1,99 @@
 #!/usr/bin/env python3
 # ########################################################################### #
-#                                                                             #
+#   shebang: 1                                                                #
 #                                                          :::      ::::::::  #
 #   ft_garden_security.py                                :+:      :+:    :+:  #
 #                                                      +:+ +:+         +:+    #
 #   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/03/04 00:45:28 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/03/04 01:18:20 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/04/07 18:43:02 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
-class SecurePlant:
-    """
-    A class that ensures data integrity for plant records.
+class Plant:
 
-    Attributes:
-        __name (str): Private plant name.
-        __height (int): Private height in cm (must be >= 0).
-        __age (int): Private age in days (must be >= 0).
-    """
+    def __init__(self, name: str, height: float,
+                 days: int, growth: float = 1.0) -> None:
 
-    def __init__(self, name: str) -> None:
-        """Initialize a SecurePlant with a name and default values."""
-        self.__name: str = name
-        self.__height: int = 0
-        self.__age: int = 0
-        print(f"Plant created: {self.__name}\n")
+        self.name: str = name
+        self._height: float = height
+        self._days: int = days
+        self._growth_rate: float = growth
 
-    def set_height(self, value: int) -> None:
-        """Validate and set the plant height."""
-        if value < 0:
-            print(f"Invalid operation attempted: height {value}cm [REJECTED]")
-            print("Security: Negative height rejected\n")
-        else:
-            self.__height = value
-            print(f"Height updated: {value}cm [OK]\n")
+    def __str__(self) -> str:
 
-    def set_age(self, value: int) -> None:
-        """Validate and set the plant age."""
-        if value < 0:
-            print(f"Invalid operation attempted: age {value} days [REJECTED]")
-            print("Security: Negative age rejected\n")
-        else:
-            self.__age = value
-            print(f"Age updated: {value} days [OK]\n")
+        return f"{self.name}: {self._height:.1f}cm, {self._days} days old"
 
-    def get_height(self) -> int:
-        """Return the current protected height."""
-        return self.__height
+    def get_height(self) -> float:
+
+        return self._height
 
     def get_age(self) -> int:
-        """Return the current protected age."""
-        return self.__age
 
-    def get_info(self) -> str:
-        """Return formatted plant status."""
-        return (
-            f"Current plant: {self.__name} "
-            f"({self.__height}cm, {self.__age} days)"
-        )
+        return self._days
+
+    def get_growth_rate(self) -> float:
+
+        return self._growth_rate
+
+    def set_height(self, cm: int) -> None:
+
+        if cm < 0:
+            print(f"{self.name}: Error, height can't be negative")
+            print("Height update rejected")
+        else:
+            self._height = cm
+            print(f"Height updated: {self._height}cm")
+
+    def set_age(self, daysip: int) -> None:
+
+        if daysip < 0:
+            print(f"{self.name}: Error, age can't be negative")
+            print("Age update rejected")
+        else:
+            self._days = daysip
+            print(f"Age updated: {self._days} days")
+
+    def set_growth_rate(self, cms: int) -> None:
+
+        if cms < 0:
+            print(f"{self.name}: Error, growth rate can't be negative")
+            print("Growth rate update rejected")
+        else:
+            self._growth_rate = cms
+            print(f"Growth rate updated: {cms}cm")
+
+    def grow(self) -> None:
+
+        self._height += self._growth_rate
+
+    def age(self) -> None:
+
+        self._days += 1
+
+    def show(self) -> None:
+        print(f"{self.__str__()}")
 
 
 def main() -> None:
-    """Main simulation of the security system."""
+
     print("=== Garden Security System ===")
-    rose: SecurePlant = SecurePlant("Rose")
+    rose: Plant = Plant("Rose", 15, 10)
+    print("Plant created: ", end="")
+    rose.show()
+    print("")
+
     rose.set_height(25)
     rose.set_age(30)
-    rose.set_height(-5)
-    print(rose.get_info())
+    print("")
+
+    rose.set_height(-25)
+    rose.set_age(-30)
+    print("")
+
+    print("Current state: ", end="")
+    rose.show()
 
 
 if __name__ == "__main__":
