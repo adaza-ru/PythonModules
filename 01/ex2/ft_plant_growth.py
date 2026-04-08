@@ -7,7 +7,7 @@
 #   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/03/04 00:05:25 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/04/07 18:41:34 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/04/08 16:28:19 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -47,8 +47,9 @@ def simulate_week(plant: Plant) -> None:
         plant.show()
         plant.grow()
         plant.age()
+
     diff: float = plant.height - initial_height
-    print(f"Growth for {plant.name} this week: {round(diff)}cm\n")
+    print(f"Growth this week: {round(diff, 1)}cm\n")
 
 
 def main() -> None:

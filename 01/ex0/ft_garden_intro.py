@@ -6,10 +6,11 @@
 #                                                      +:+ +:+         +:+    #
 #   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
-#   Created: 2026/02/16 20:44:58 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/03/31 13:46:20 by adaza-ru           ###   ########.fr      #
+#   Created: 2026/04/08 15:53:30 by adaza-ru            #+#    #+#            #
+#   Updated: 2026/04/08 16:07:55 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
+
 
 def ft_garden_intro(plant: str, cm: int, days: int) -> None:
     name: str = plant

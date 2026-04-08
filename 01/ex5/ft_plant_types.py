@@ -7,7 +7,7 @@
 #   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/03/04 00:59:32 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/04/07 18:44:22 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/04/08 17:27:29 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -79,15 +79,27 @@ class Plant:
 class Flower(Plant):
 
     def __init__(
-        self, name: str, height: float, age: int, color: str
+        self, name: str, height: float, age: int,
+        color: str, growth: float = 1.0
     ) -> None:
 
-        super().__init__(name, height, age)
+        super().__init__(name, height, age, growth)
         self._color: str = color
+        self.blooming: bool = False
+
+    def show(self):
+        super().show()
+        print(f" Color: {self._color}")
+        if self.blooming is False:
+            print("Rose has not bloomed yet\n[asking the rose to bloom]")
+        else:
+            print(f"{self.name} is blooming beautifully!\n")
 
     def bloom(self) -> None:
 
-        print(f"{self.name} ({self._color}) is blooming beautifully!\n")
+        if self.blooming is False:
+            self.blooming = True
+        print("[asking the rose to bloom]")
 
 
 class Tree(Plant):
@@ -132,12 +144,9 @@ def main() -> None:
 
     print("=== Garden Plant Types ===")
 
-    rose: Flower = Flower("Rose", 25, 30, "red")
-    tulip: Flower = Flower("Tulip", 15, 20, "yellow")
+    rose: Flower = Flower("Rose", 25, 10, "red")
     print(f"{rose.get_base_info()}, {rose.color} color")
     rose.bloom()
-    print(f"{tulip.get_base_info()}, {tulip.color} color")
-    tulip.bloom()
 
     oak: Tree = Tree("Oak", 500, 1825, 50)
     pine: Tree = Tree("Pine", 300, 1000, 30)

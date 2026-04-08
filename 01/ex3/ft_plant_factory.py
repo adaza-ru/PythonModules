@@ -7,7 +7,7 @@
 #   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/03/04 00:36:55 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/04/07 18:41:58 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/04/08 15:45:17 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -15,7 +15,6 @@ class Plant:
 
     def __init__(self, name: str, height: float,
                  days: int, growth: float = 1.0) -> None:
-        """Initialize the Plant with its specific data."""
         self.name: str = name
         self.height: float = height
         self.days: int = days
