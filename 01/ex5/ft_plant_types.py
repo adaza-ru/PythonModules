@@ -7,7 +7,7 @@
 #   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
 #                                                  +#+#+#+#+#+   +#+          #
 #   Created: 2026/03/04 00:59:32 by adaza-ru            #+#    #+#            #
-#   Updated: 2026/04/08 17:27:29 by adaza-ru           ###   ########.fr      #
+#   Updated: 2026/04/08 19:49:06 by adaza-ru           ###   ########.fr      #
 #                                                                             #
 # ########################################################################### #
 
@@ -91,9 +91,9 @@ class Flower(Plant):
         super().show()
         print(f" Color: {self._color}")
         if self.blooming is False:
-            print("Rose has not bloomed yet\n[asking the rose to bloom]")
+            print(" Rose has not bloomed yet")
         else:
-            print(f"{self.name} is blooming beautifully!\n")
+            print(f" {self.name} is blooming beautifully!")
 
     def bloom(self) -> None:
 
@@ -105,16 +105,17 @@ class Flower(Plant):
 class Tree(Plant):
 
     def __init__(
-        self, name: str, height: float, age: int, diameter: int
+        self, name: str, height: float, age: int,
+        diameter: int,  growth: float = 1.0
     ) -> None:
 
-        super().__init__(name, height, age)
+        super().__init__(name, height, age, growth)
         self._trunk_diameter: int = diameter
 
     def produce_shade(self) -> None:
 
         shade: float = self._trunk_diameter * self._height
-        print(f"{self.name} provides {shade} square meters of shade\n")
+        print(f"Tree {self.name} now produces a shadeo f {shade} square meters of shade")
 
 
 class Vegetable(Plant):
@@ -145,15 +146,13 @@ def main() -> None:
     print("=== Garden Plant Types ===")
 
     rose: Flower = Flower("Rose", 25, 10, "red")
-    print(f"{rose.get_base_info()}, {rose.color} color")
+    rose.show()
     rose.bloom()
+    rose.show()
 
     oak: Tree = Tree("Oak", 500, 1825, 50)
-    pine: Tree = Tree("Pine", 300, 1000, 30)
     print(f"{oak.get_base_info()}, {oak.trunk_diameter}cm diameter")
     oak.produce_shade(78)
-    print(f"{pine.get_base_info()}, {pine.trunk_diameter}cm diameter")
-    pine.produce_shade(45)
 
     tomato: Vegetable = Vegetable("Tomato", 80, 90, "summer", "vitamin C")
     carrot: Vegetable = Vegetable("Carrot", 20, 60, "winter", "vitamin A")
