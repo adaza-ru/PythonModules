@@ -23,7 +23,7 @@ def main() -> None:
         print("---")
         f.close()
         print(f"File '{filename}' closed.")
-    except Exception as e:
+    except OSError as e:
         sys.stderr.write(f"[STDERR] Error opening file '{filename}': {str(e)}\n")
         return
 
@@ -44,7 +44,6 @@ def main() -> None:
     sys.stdout.write("Enter new file name (or empty): ")
     sys.stdout.flush()
 
-    # sys.stdin.readline() retorna str
     raw_input: str = sys.stdin.readline()
     new_file: str = raw_input.strip('\n')
 
@@ -58,7 +57,7 @@ def main() -> None:
         out_f.write(transformed_content)
         out_f.close()
         print(f"Data saved in file '{new_file}'.")
-    except Exception as e:
+    except OSError as e:
         sys.stderr.write(f"[STDERR] Error opening file '{new_file}': {str(e)}\n")
         print("Data not saved.")
 

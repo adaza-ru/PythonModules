@@ -23,7 +23,7 @@ def main() -> None:
         print("---")
         f.close()
         print(f"File '{filename}' closed.")
-    except Exception as e:
+    except OSError as e:
         print(f"Error opening file '{filename}': {str(e)}")
 
 

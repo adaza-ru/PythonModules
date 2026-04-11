@@ -52,7 +52,7 @@ def main() -> None:
         out_f.write(transformed_content)
         out_f.close()
         print(f"Data saved in file '{new_file}'.")
-    except Exception as e:
+    except OSError as e:
         print(f"Error opening file '{new_file}': {str(e)}")
         print("Data not saved.")
 
