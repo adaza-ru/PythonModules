@@ -24,13 +24,15 @@ class Plant:
 
         return f"{self.name}: {round(self.height, 1)}cm, {self.days} days old"
 
-    def grow(self) -> None:
+    def grow(self, times: int | None = None) -> None:
 
-        self.height += self.growth_rate
+        self.height += (
+            self.growth_rate if times is None else self.growth_rate * times
+        )
 
-    def age(self) -> None:
+    def age(self, days: int = 1) -> None:
 
-        self.days += 1
+        self.days += days
 
     def show(self) -> None:
         print(f"{self.__str__()}")
@@ -39,9 +41,9 @@ class Plant:
 def main() -> None:
 
     plants: list[list[str] | list[float] | list[int]] = [
-            ["Rose", "Oak", "Cactus", "Sunflower", "Fern",],
-            [25.0, 200.0, 5.0, 80.0, 15.0],
-            [30, 365, 90, 45, 120]]
+        ["Rose", "Oak", "Cactus", "Sunflower", "Fern",],
+        [25.0, 200.0, 5.0, 80.0, 15.0],
+        [30, 365, 90, 45, 120]]
     total_plants: int = 0
 
     print("=== Plant Factory Output ===")

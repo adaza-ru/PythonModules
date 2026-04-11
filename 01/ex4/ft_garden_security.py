@@ -64,13 +64,15 @@ class Plant:
             self._growth_rate = cms
             print(f"Growth rate updated: {cms}cm")
 
-    def grow(self) -> None:
+    def grow(self, times: int | None = None) -> None:
 
-        self._height += self._growth_rate
+        self._height += (
+            self._growth_rate if times is None else self._growth_rate * times
+        )
 
-    def age(self) -> None:
+    def age(self, days: int = 1) -> None:
 
-        self._days += 1
+        self._days += days
 
     def show(self) -> None:
         print(f"{self.__str__()}")
