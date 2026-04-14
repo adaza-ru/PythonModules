@@ -1,0 +1,60 @@
+#!/usr/bin/env python3
+# ########################################################################### #
+#   shebang: 1                                                                #
+#                                                          :::      ::::::::  #
+#   ft_plant_factory.py                                  :+:      :+:    :+:  #
+#                                                      +:+ +:+         +:+    #
+#   By: adaza-ru <adaza-ru@student.42malaga.com>     +#+  +:+       +#+       #
+#                                                  +#+#+#+#+#+   +#+          #
+#   Created: 2026/03/04 00:36:55 by adaza-ru            #+#    #+#            #
+#   Updated: 2026/04/14 18:23:14 by adaza-ru           ###   ########.fr      #
+#                                                                             #
+# ########################################################################### #
+
+class Plant:
+
+    def __init__(self, name: str, height: float,
+                 days: int, growth: float = 1.0) -> None:
+        self.name: str = name
+        self.height: float = height
+        self.days: int = days
+        self.growth_rate: float = growth
+
+    def __str__(self) -> str:
+
+        return f"{self.name}: {round(self.height, 1)}cm, {self.days} days old"
+
+    def grow(self, times: int | None = None) -> None:
+
+        self.height += (
+            self.growth_rate if times is None else self.growth_rate * times
+        )
+
+    def age(self, days: int = 1) -> None:
+
+        self.days += days
+
+    def show(self) -> None:
+        print(self)
+
+
+def main() -> None:
+
+    names: list[str] = ["Rose", "Oak", "Cactus", "Sunflower", "Fern"]
+    heights: list[float] = [25.0, 200.0, 5.0, 80.0, 15.0]
+    days: list[int] = [30, 365, 90, 45, 120]
+
+    total_plants: int = 0
+    plants: list[Plant] = []
+
+    print("=== Plant Factory Output ===")
+    for i in range(len(names)):
+        plants += [Plant(names[i], heights[i], days[i])]
+        total_plants += 1
+    for p in plants:
+        print(p)
+    print(f"\nTotal plants created: {total_plants}")
+
+
+if __name__ == "__main__":
+    main()
