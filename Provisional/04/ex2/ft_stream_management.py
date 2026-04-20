@@ -1,9 +1,9 @@
 import sys
-from typing import List, TextIO
+from typing import TextIO
 
 
 def main() -> None:
-    args: List[str] = sys.argv
+    args: list[str] = sys.argv
     if len(args) != 2:
         print("Usage: ft_stream_management.py <file>")
         return
@@ -24,13 +24,14 @@ def main() -> None:
         f.close()
         print(f"File '{filename}' closed.")
     except OSError as e:
-        sys.stderr.write(f"[STDERR] Error opening file '{filename}': {str(e)}\n")
+        sys.stderr.write(f"[STDERR] Error opening file "
+                         f"'{filename}': {str(e)}\n")
         return
 
     print("Transform data:")
     print("---")
 
-    lines: List[str] = content.split('\n')
+    lines: list[str] = content.split('\n')
     if lines and lines[-1] == '':
         lines.pop()
 
@@ -58,7 +59,8 @@ def main() -> None:
         out_f.close()
         print(f"Data saved in file '{new_file}'.")
     except OSError as e:
-        sys.stderr.write(f"[STDERR] Error opening file '{new_file}': {str(e)}\n")
+        sys.stderr.write(f"[STDERR] Error opening file "
+                         f"'{new_file}': {str(e)}\n")
         print("Data not saved.")
 
 

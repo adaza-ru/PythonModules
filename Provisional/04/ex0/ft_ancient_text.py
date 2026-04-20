@@ -1,9 +1,9 @@
 import sys
-from typing import List, TextIO
+import typing
 
 
 def main() -> None:
-    args: List[str] = sys.argv
+    args: list[str] = sys.argv
 
     if len(args) != 2:
         print("Usage: ft_ancient_text.py <file>")
@@ -14,7 +14,7 @@ def main() -> None:
     print(f"Accessing file '{filename}'")
 
     try:
-        f: TextIO = open(filename, 'r')
+        f: typing.TextIO = open(filename, 'r')
         content: str = f.read()
         print("---")
         print(content, end="")
