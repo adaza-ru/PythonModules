@@ -35,12 +35,9 @@ class NumericProcessor(DataProcessor):
 
         if not self.validate(data):
             raise ValueError("Improper numeric data")
-        if isinstance(data, list):
-            for item in data:
-                self._storage.append((self._current_rank, str(item)))
-                self._current_rank += 1
-        else:
-            self._storage.append((self._current_rank, str(data)))
+        items = data if isinstance(data, list) else [data]
+        for item in items:
+            self._storage.append((self._current_rank, str(item)))
             self._current_rank += 1
 
 
@@ -57,12 +54,9 @@ class TextProcessor(DataProcessor):
 
         if not self.validate(data):
             raise ValueError("Improper text data")
-        if isinstance(data, list):
-            for item in data:
-                self._storage.append((self._current_rank, str(item)))
-                self._current_rank += 1
-        else:
-            self._storage.append((self._current_rank, str(data)))
+        items = data if isinstance(data, list) else [data]
+        for item in items:
+            self._storage.append((self._current_rank, item))
             self._current_rank += 1
 
 
@@ -87,16 +81,10 @@ class LogProcessor(DataProcessor):
 
         if not self.validate(data):
             raise ValueError("Improper log data")
-        if isinstance(data, list):
-            for d in data:
-                self._storage.append(
-                        (self._current_rank,
-                         f"{k}: {v}") for k, v in d.items())
-                self._current_rank += 1
-        else:
-            self._storage.append(
-                (self._current_rank,
-                 f"{k}: {v}") for k, v in data.items())
+        items = data if isinstance(data, list) else [data]
+        for item in items:
+            log_str = f"{item['log_level']}: {item['log_message']}"
+            self._storage.append((self._current_rank, log_str))
             self._current_rank += 1
 
 
@@ -138,10 +126,13 @@ if __name__ == "__main__":
     print(" Trying to validate input 'Hello': ", end="")
     print(LogProcessor().validate("Hello"))
     test_log: list[dict] = [
-        {'log_level': 'NOTICE', 'log_message': 555},
+        {'log_level': 'NOTICE', 'log_message': "Connection to server"},
         {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}
         ]
     print(f" Processing data: {test_log}")
     tl: LogProcessor = LogProcessor()
-    print(f"{tl.validate(test_log)}")
-
+    tl.ingest(test_log)
+    print(" Extracting 2 values...")
+    for _ in range(2):
+        rank, value = tl.output()
+        print(f" Log entry {rank}: {value}")
