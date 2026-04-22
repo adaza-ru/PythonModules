@@ -1,5 +1,5 @@
 import abc
-from typing import Any
+import typing
 
 
 class DataProcessor(abc.ABC):
@@ -9,11 +9,11 @@ class DataProcessor(abc.ABC):
         self._current_rank: int = 0
 
     @abc.abstractmethod
-    def validate(self, data: Any) -> bool:
+    def validate(self, data: typing.Any) -> bool:
         pass
 
     @abc.abstractmethod
-    def ingest(self, data: Any) -> None:
+    def ingest(self, data: typing.Any) -> None:
         pass
 
     def output(self) -> tuple[int, str]:
@@ -24,14 +24,14 @@ class DataProcessor(abc.ABC):
 
 class NumericProcessor(DataProcessor):
 
-    def validate(self, data: Any) -> bool:
+    def validate(self, data: typing.Any) -> bool:
         if isinstance(data, (int, float)):
             return True
         if isinstance(data, list):
             return all(isinstance(x, (int, float)) for x in data)
         return False
 
-    def ingest(self, data: Any) -> None:
+    def ingest(self, data: typing.Any) -> None:
 
         if not self.validate(data):
             raise ValueError("Improper numeric data")
@@ -43,14 +43,14 @@ class NumericProcessor(DataProcessor):
 
 class TextProcessor(DataProcessor):
 
-    def validate(self, data: Any) -> bool:
+    def validate(self, data: typing.Any) -> bool:
         if isinstance(data, str):
             return True
         if isinstance(data, list):
             return all(isinstance(x, str) for x in data)
         return False
 
-    def ingest(self, data: Any) -> None:
+    def ingest(self, data: typing.Any) -> None:
 
         if not self.validate(data):
             raise ValueError("Improper text data")
@@ -62,22 +62,23 @@ class TextProcessor(DataProcessor):
 
 class LogProcessor(DataProcessor):
 
-    def validate(self, data: Any) -> bool:
+    def validate(self, data: typing.Any) -> bool:
         if isinstance(data, dict):
-            return (
-                isinstance(data.get("log_level"), str) and
+            return all((
+                isinstance(data.get("log_level"), str),
                 isinstance(data.get("log_message"), str)
-            )
+            ))
         if isinstance(data, list):
             return all(
-                    isinstance(x, dict) and
-                    isinstance(x.get("log_level"), str) and
+                isinstance(x, dict) and all((
+                    isinstance(x.get("log_level"), str),
                     isinstance(x.get("log_message"), str)
-                    for x in data
-                )
+                ))
+                for x in data
+            )
         return False
 
-    def ingest(self, data: Any) -> None:
+    def ingest(self, data: typing.Any) -> None:
 
         if not self.validate(data):
             raise ValueError("Improper log data")
@@ -125,10 +126,10 @@ if __name__ == "__main__":
     print("\nTesting Log Processor...")
     print(" Trying to validate input 'Hello': ", end="")
     print(LogProcessor().validate("Hello"))
-    test_log: list[dict] = [
-        {'log_level': 'NOTICE', 'log_message': "Connection to server"},
-        {'log_level': 'ERROR', 'log_message': 'Unauthorized access!!'}
-        ]
+    test_log: list[dict[str, str]] = [
+        {"log_level": "NOTICE", "log_message": "Connection to server"},
+        {"log_level": "ERROR", "log_message": "Unauthorized access!!"}
+    ]
     print(f" Processing data: {test_log}")
     tl: LogProcessor = LogProcessor()
     tl.ingest(test_log)
