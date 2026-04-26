@@ -4,36 +4,37 @@ def secure_archive(
     content: str = "",
 ) -> tuple[bool, str]:
     try:
-        if action == "r" or action == 0:
-            with open(filename, "r") as file:
+        if action in ("r", 0):
+            with open(filename, "r", encoding="utf-8") as file:
                 return (True, file.read())
-        if action == "w" or action == 1:
-            with open(filename, "w") as file:
+        elif action in ("w", 1):
+            with open(filename, "w", encoding="utf-8") as file:
                 file.write(content)
             return (True, "Content successfully written to file")
         return (False, "Invalid action mode.")
-    except OSError as error:
-        return (False, str(error))
+
+    except (OSError, UnicodeDecodeError, UnicodeEncodeError) as error:
+        return (False, f"Error {error.errno}: {error.strerror}")
 
 
 def main() -> None:
-    print("=== Cyber Archives Security ===")
+    print("=== Cyber Archives Security ===\n")
 
     res1 = secure_archive("/not/existing/file", "r")
-    print("Using 'secure_archive' to read from a nonexistent file:")
-    print(res1)
+    print("Using 'secure_archive' to read from a nonexistent file: ")
+    print(f"{res1}\n")
 
-    res2 = secure_archive("/etc/master.passwd", "r")
+    res2 = secure_archive("etc/master.passwd", "r")
     print("Using 'secure_archive' to read from an inaccessible file:")
-    print(res2)
+    print(f"{res2}\n")
 
     res3 = secure_archive("ancient_fragment.txt", "r")
     print("Using 'secure_archive' to read from a regular file:")
-    print(res3)
+    print(f"{res3}\n")
 
     res4 = secure_archive("new_fragment.txt", "w", res3[1] if res3[0] else "")
     print("Using 'secure_archive' to write previous content to a new file:")
-    print(res4)
+    print(f"{res4}\n")
 
 
 if __name__ == "__main__":

@@ -30,10 +30,7 @@ def main() -> None:
     action: str
     for i in range(1000):
         name, action = next(stream)
-        if i < 15 or i > 991:
-            print(f"Event {i}: Player {name} did action {action}")
-        elif i == 15:
-            print("[...]")
+        print(f"Event {i}: Player {name} did action {action}")
 
     event_list: list[tuple[str, str]] = [next(stream) for _ in range(10)]
     print(f"Built list of 10 events: {event_list}")

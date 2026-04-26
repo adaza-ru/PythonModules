@@ -13,17 +13,21 @@ def main() -> None:
     print("=== Cyber Archives Recovery ===")
     print(f"Accessing file '{filename}'")
 
+    content: str = ""
     try:
-        f: typing.TextIO = open(filename, 'r')
-        content: str = f.read()
-        print("---")
-        print(content, end="")
-        if content and not content.endswith('\n'):
-            print()
-        print("---")
-        f.close()
-        print(f"File '{filename}' closed.")
-    except OSError as e:
+        f: typing.TextIO = open(filename, 'r', encoding='utf-8')
+        try:
+            content = f.read()
+            if content:
+                if not content.endswith('\n'):
+                    content += '\n'
+            print("---\n")
+            print(content)
+            print("---")
+        finally:
+            f.close()
+            print(f"File '{filename}' closed.")
+    except (OSError, UnicodeDecodeError) as e:
         print(f"Error opening file '{filename}': {str(e)}")
 
 

@@ -1,11 +1,12 @@
 import sys
-from typing import List, TextIO
+import typing
 
 
 def main() -> None:
-    args: List[str] = sys.argv
+    args: list[str] = sys.argv
+
     if len(args) != 2:
-        print("Usage: ft_archive_creation.py <file>")
+        print("Usage: ft_ancient_text.py <file>")
         return
 
     filename: str = args[1]
@@ -14,47 +15,45 @@ def main() -> None:
 
     content: str = ""
     try:
-        f: TextIO = open(filename, 'r')
-        content = f.read()
-        print("---")
-        print(content, end="")
-        if content and not content.endswith('\n'):
-            print()
-        print("---")
-        f.close()
-        print(f"File '{filename}' closed.")
-    except Exception as e:
+        f: typing.TextIO = open(filename, 'r', encoding='utf-8')
+        try:
+            content = f.read()
+            if content:
+                if not content.endswith('\n'):
+                    content += '\n'
+            print("---\n")
+            print(content)
+            print("---")
+        finally:
+            f.close()
+            print(f"File '{filename}' closed.")
+    except (OSError, UnicodeDecodeError) as e:
         print(f"Error opening file '{filename}': {str(e)}")
-        return
 
-    print("Transform data:")
-    print("---")
+    if not content:
+        print("No content to transform.")
+    else:
+        print("Transform data:")
+        nc: list[str] = content.splitlines()
+        content = "#\n".join(nc) + "#\n"
+        print("---\n")
+        print(content)
+        print("---")
 
-    lines: List[str] = content.split('\n')
-    if lines and lines[-1] == '':
-        lines.pop()
-
-    transformed_content: str = ""
-    for line in lines:
-        transformed_content += line + "#\n"
-
-    print(transformed_content, end="")
-    print("---")
-
-    new_file: str = input("Enter new file name (or empty): ")
-    if not new_file:
+    new_filename: str = input("Enter new file name (or empty): ")
+    if new_filename:
+        try:
+            out_f: typing.TextIO = open(new_filename, 'w', encoding='utf-8')
+            print(f"Saving data to '{new_filename}'")
+            try:
+                out_f.write(content)
+            finally:
+                out_f.close()
+            print(f"Data saved in file '{new_filename}'.")
+        except (OSError, UnicodeEncodeError) as e:
+            print(f"Error creating file '{new_filename}': {str(e)}")
+    else:
         print("Not saving data.")
-        return
-
-    print(f"Saving data to '{new_file}'")
-    try:
-        out_f: TextIO = open(new_file, 'w')
-        out_f.write(transformed_content)
-        out_f.close()
-        print(f"Data saved in file '{new_file}'.")
-    except OSError as e:
-        print(f"Error opening file '{new_file}': {str(e)}")
-        print("Data not saved.")
 
 
 if __name__ == "__main__":

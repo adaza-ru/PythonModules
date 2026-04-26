@@ -50,7 +50,7 @@ class TextProcessor(DataProcessor):
 
     def __init__(self) -> None:
         super().__init__()
-        self._name: str = "Data Processor"
+        self._name: str = "Text Processor"
 
     def validate(self, data: typing.Any) -> bool:
         if isinstance(data, str):
