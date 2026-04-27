@@ -3,6 +3,12 @@ import sys
 
 def main() -> None:
     """Parses inventory data, handles errors, and prints an analysis report."""
+
+    if len(sys.argv) == 1:
+        print("Usage: python3 ft_inventory_system.py <item1:quantity>"
+              " <item2:quantity> ...")
+        return
+
     print("=== Inventory System Analysis ===")
 
     inventory: dict[str, int] = {}
@@ -22,11 +28,13 @@ def main() -> None:
 
         try:
             inventory[item] = int(qty_str)
-        except ValueError:
-            print(f"Quantity error for '{item}': invalid literal for int()")
+        except ValueError as e:
+            print(f"Quantity error for '{item}': {e}")
             continue
 
     if not inventory:
+        print("Wrong inventory. Usage: python3 ft_inventory_system.py "
+              "<item1:quantity> <item2:quantity> ...")
         return
 
     items_list: list[str] = list(inventory.keys())
