@@ -27,11 +27,12 @@ def main() -> None:
         finally:
             f.close()
             print(f"File '{filename}' closed.")
-    except (OSError, UnicodeDecodeError) as e:
+    except (OSError, ValueError) as e:
         print(f"Error opening file '{filename}': {str(e)}")
 
     if not content:
         print("No content to transform.")
+        return
     else:
         print("Transform data:")
         nc: list[str] = content.splitlines()
@@ -50,7 +51,7 @@ def main() -> None:
             finally:
                 out_f.close()
             print(f"Data saved in file '{new_filename}'.")
-        except (OSError, UnicodeEncodeError) as e:
+        except (OSError, ValueError) as e:
             print(f"Error creating file '{new_filename}': {str(e)}")
     else:
         print("Not saving data.")

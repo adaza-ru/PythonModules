@@ -13,8 +13,10 @@ def secure_archive(
             return (True, "Content successfully written to file")
         return (False, "Invalid action mode.")
 
-    except (OSError, UnicodeDecodeError, UnicodeEncodeError) as error:
+    except OSError as error:
         return (False, f"Error {error.errno}: {error.strerror}")
+    except ValueError as e:
+        return (False, f"Value Error: {e}")
 
 
 def main() -> None:

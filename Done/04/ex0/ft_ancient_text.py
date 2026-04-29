@@ -27,7 +27,7 @@ def main() -> None:
         finally:
             f.close()
             print(f"File '{filename}' closed.")
-    except (OSError, UnicodeDecodeError) as e:
+    except (OSError, ValueError) as e:
         print(f"Error opening file '{filename}': {str(e)}")
 
 

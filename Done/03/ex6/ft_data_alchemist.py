@@ -2,7 +2,6 @@ import random
 
 
 def main() -> None:
-    """Transforms player data using list and dictionary comprehensions."""
     print("=== Game Data Alchemist ===\n")
 
     initial_players: list[str] = [

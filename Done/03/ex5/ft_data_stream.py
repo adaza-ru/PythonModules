@@ -3,7 +3,6 @@ from typing import Generator
 
 
 def gen_event() -> Generator[tuple[str, str], None, None]:
-    """Infinitely yields random player events."""
     players: list[str] = ["alice", "bob", "charlie", "dylan"]
     actions: list[str] = ["run", "eat", "sleep", "grab", "move",
                           "climb", "swim", "release", "use"]
@@ -14,7 +13,6 @@ def gen_event() -> Generator[tuple[str, str], None, None]:
 def consume_event(
         event_list: list[tuple[str, str]]
 ) -> Generator[tuple[str, str], None, None]:
-    """Yields and removes elements from a list randomly until empty."""
     while event_list:
         idx: int = random.randrange(len(event_list))
         event: tuple[str, str] = event_list.pop(idx)
@@ -22,7 +20,6 @@ def consume_event(
 
 
 def main() -> None:
-    """Demonstrates infinite stream and random consumption."""
     print("=== Game Data Stream Processor ===")
 
     stream: Generator[tuple[str, str], None, None] = gen_event()

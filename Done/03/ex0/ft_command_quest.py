@@ -2,10 +2,6 @@ import sys
 
 
 def main() -> None:
-    """
-    Main function to parse and display command-line arguments.
-    It identifies the program name and lists any additional parameters.
-    """
     print("=== Command Quest ===")
 
     program_name: str = sys.argv[0]

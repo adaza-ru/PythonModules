@@ -2,10 +2,6 @@ import sys
 
 
 def main() -> None:
-    """
-    Parses numeric scores from CLI, handles invalid inputs,
-    and displays summary statistics.
-    """
     scores: list[int] = []
 
     print("=== Player Score Analytics ===")

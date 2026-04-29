@@ -2,7 +2,6 @@ import sys
 
 
 def main() -> None:
-    """Parses inventory data, handles errors, and prints an analysis report."""
 
     if len(sys.argv) == 1:
         print("Usage: python3 ft_inventory_system.py <item1:quantity>"
