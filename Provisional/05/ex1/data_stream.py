@@ -123,7 +123,7 @@ class DataStream():
                     break
             else:
                 print("DataStream error - Can't process element"
-                      f" in stream:{data}")
+                      f" in stream: {data}")
 
     def print_processors_stats(self) -> None:
 
