@@ -144,44 +144,50 @@ if __name__ == "__main__":
     print("=== Code Nexus - Data Stream ===\n")
 
     print("Initialize Data Stream...")
-    ds: DataStream = DataStream()
-    ds.print_processors_stats()
 
-    print("Registering Numeric Processor\n")
-    np: NumericProcessor = NumericProcessor()
-    ds.register_processor(np)
+    try:
 
-    data: list[typing.Any] = [
-        "Hello world",
-        [3.14, -1, 2.71],
-        [
-            {"log_level": "WARNING",
-             "log_message": "Telnet access! Use ssh instead"},
-            {"log_level": "INFO", "log_message": "User wil is connected"}
-        ],
-        42,
-        ['Hi', 'five']
-    ]
-    print(f"Send first batch of data on stream: {data}")
-    ds.process_stream(data)
-    ds.print_processors_stats()
+        ds: DataStream = DataStream()
+        ds.print_processors_stats()
 
-    print("Registering other data processors")
-    tp: TextProcessor = TextProcessor()
-    lp: LogProcessor = LogProcessor()
-    ds.register_processor(tp)
-    ds.register_processor(lp)
+        print("Registering Numeric Processor\n")
+        np: NumericProcessor = NumericProcessor()
+        ds.register_processor(np)
 
-    print("Send the same batch again")
-    ds.process_stream(data)
-    ds.print_processors_stats()
+        data: list[typing.Any] = [
+            "Hello world",
+            [3.14, -1, 2.71],
+            [
+                {"log_level": "WARNING",
+                 "log_message": "Telnet access! Use ssh instead"},
+                {"log_level": "INFO", "log_message": "User wil is connected"}
+            ],
+            42,
+            ['Hi', 'five']
+        ]
+        print(f"Send first batch of data on stream: {data}")
+        ds.process_stream(data)
+        ds.print_processors_stats()
 
-    print("Consume some elements from the data processors:"
-          " Numeric 3, Text 2, Log 1")
-    np.output()
-    np.output()
-    np.output()
-    tp.output()
-    tp.output()
-    lp.output()
-    ds.print_processors_stats()
+        print("Registering other data processors")
+        tp: TextProcessor = TextProcessor()
+        lp: LogProcessor = LogProcessor()
+        ds.register_processor(tp)
+        ds.register_processor(lp)
+
+        print("Send the same batch again")
+        ds.process_stream(data)
+        ds.print_processors_stats()
+
+        print("Consume some elements from the data processors:"
+              " Numeric 3, Text 2, Log 1")
+        np.output()
+        np.output()
+        np.output()
+        tp.output()
+        tp.output()
+        lp.output()
+        ds.print_processors_stats()
+
+    except Exception as e:
+        print(f"Error in __main__({type(e).__name__}): {e}")

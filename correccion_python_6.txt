@@ -50,13 +50,5 @@ Check that ingredients are defined in the spellbook and not in the validator, an
 Check that "Earth, Wind & Fire" can record the spell "Fantasy"
 Verify that the circular dependency problem is explained
 Ask the learner which solution was used to avoid circular dependencies.
-Code Quality
-Import Mastery Assessment
 
-Evaluate the overall code quality:
 
-Is the code written in Python 3.10 or higher?
-Does the code adhere to the flake8 linter standards (no errors)?
-Comprehensive type annotations are used throughout (all functions have parameter and return types). Check this using mypy (note that there is an exception for ft_alembic_4.py).
-Docstrings are NOT required for this module.
-Is the overall code organization clean and professional?

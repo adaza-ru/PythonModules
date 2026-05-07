@@ -154,7 +154,10 @@ class DataStream():
                 except IndexError:
                     break
             if collected:
-                plugin.process_output(collected)
+                try:
+                    plugin.process_output(collected)
+                except Exception as e:
+                    print(f"PluginError({type(plugin).__name__}): {e}")
 
 
 class CsvPlugin:
@@ -176,51 +179,56 @@ if __name__ == "__main__":
     print("=== Code Nexus - Data Pipeline ===\n")
 
     print("Initialize Data Stream...")
-    ds: DataStream = DataStream()
-    ds.print_processors_stats()
+    try:
 
-    print("Registering Processors\n")
-    np: NumericProcessor = NumericProcessor()
-    ds.register_processor(np)
-    tp: TextProcessor = TextProcessor()
-    ds.register_processor(tp)
-    lp: LogProcessor = LogProcessor()
-    ds.register_processor(lp)
+        ds: DataStream = DataStream()
+        ds.print_processors_stats()
 
-    data: list[typing.Any] = [
-        "Hello world",
-        [3.14, -1, 2.71],
-        [
-            {"log_level": "WARNING",
-             "log_message": "Telnet access! Use ssh instead"},
-            {"log_level": "INFO", "log_message": "User wil is connected"}
-        ],
-        42,
-        ['Hi', 'five']
-    ]
-    print(f"Send first batch of data on stream: {data}")
-    ds.process_stream(data)
-    ds.print_processors_stats()
+        print("Registering Processors\n")
+        np: NumericProcessor = NumericProcessor()
+        ds.register_processor(np)
+        tp: TextProcessor = TextProcessor()
+        ds.register_processor(tp)
+        lp: LogProcessor = LogProcessor()
+        ds.register_processor(lp)
 
-    print("Send 3 processed data from each processor to a CSV plugin:")
-    csv_plugin: CsvPlugin = CsvPlugin()
-    ds.output_pipeline(3, csv_plugin)
-    ds.print_processors_stats()
+        data: list[typing.Any] = [
+            "Hello world",
+            [3.14, -1, 2.71],
+            [
+                {"log_level": "WARNING",
+                 "log_message": "Telnet access! Use ssh instead"},
+                {"log_level": "INFO", "log_message": "User wil is connected"}
+            ],
+            42,
+            ['Hi', 'five']
+        ]
+        print(f"Send first batch of data on stream: {data}")
+        ds.process_stream(data)
+        ds.print_processors_stats()
 
-    data2 = [
-        21,
-        ['I love AI', 'LLMs are wonderful', 'Stay healthy'],
-        [{'log_level': 'ERROR', 'log_message': '500 server crash'},
-         {'log_level': 'NOTICE',
-          'log_message': 'Certificate expires in 10 days'}],
-        [32, 42, 64, 84, 128, 168],
-        'World hello'
-    ]
+        print("Send 3 processed data from each processor to a CSV plugin:")
+        csv_plugin: CsvPlugin = CsvPlugin()
+        ds.output_pipeline(3, csv_plugin)
+        ds.print_processors_stats()
 
-    print(f"Send another batch of data: {data2}")
-    ds.process_stream(data2)
-    ds.print_processors_stats()
+        data2 = [
+            21,
+            ["I love AI", "LLMs are wonderful", "Stay healthy"],
+            [{"log_level": "ERROR", "log_message": "500 server crash"},
+             {"log_level": "NOTICE",
+              "log_message": "Certificate expires in 10 days"}],
+            [32, 42, 64, 84, 128, 168],
+            "World hello"
+        ]
 
-    print("Send 5 processed data from each processor to a JSON plugin:")
-    ds.output_pipeline(5, JsonPlugin())
-    ds.print_processors_stats()
+        print(f"Send another batch of data: {data2}")
+        ds.process_stream(data2)
+        ds.print_processors_stats()
+
+        print("Send 5 processed data from each processor to a JSON plugin:")
+        ds.output_pipeline(5, JsonPlugin())
+        ds.print_processors_stats()
+
+    except Exception as e:
+        print(f"Error in __main__({type(e).__name__}): {e}")
