@@ -13,7 +13,7 @@ def test_factory(factory: CreatureFactory) -> None:
         evolved_creature = factory.create_evolved()
         print(evolved_creature.describe())
         print(evolved_creature.attack())
-        
+
     except Exception as e:
         print(f"An error occurred while testing the factory: {e}")
 
@@ -27,9 +27,9 @@ def test_battle(factory1: CreatureFactory, factory2: CreatureFactory) -> None:
         fighter2 = factory2.create_base()
 
         print(fighter1.describe())
-        print("vs.")
+        print(" vs.")
         print(fighter2.describe())
-        print("fight!")
+        print(" fight!")
         print(fighter1.attack())
         print(fighter2.attack())
 
@@ -44,9 +44,11 @@ def main() -> None:
         aqua_factory = AquaFactory()
 
         test_factory(flame_factory)
+        print("")
         test_factory(aqua_factory)
+        print("")
         test_battle(flame_factory, aqua_factory)
-        
+
     except Exception as e:
         print(f"A critical error occurred: {e}")
 

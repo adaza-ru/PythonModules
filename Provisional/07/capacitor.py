@@ -37,13 +37,13 @@ def test_transform() -> None:
         base = factory.create_base()
         print(base.describe())
         print(base.attack())
-        
+
         transform_method = getattr(base, "transform", None)
         if callable(transform_method):
             print(transform_method())
-            
+
         print(base.attack())
-        
+
         revert_method = getattr(base, "revert", None)
         if callable(revert_method):
             print(revert_method())
@@ -52,13 +52,13 @@ def test_transform() -> None:
         evolved = factory.create_evolved()
         print(evolved.describe())
         print(evolved.attack())
-        
+
         transform_method_evolved = getattr(evolved, "transform", None)
         if callable(transform_method_evolved):
             print(transform_method_evolved())
-            
+
         print(evolved.attack())
-        
+
         revert_method_evolved = getattr(evolved, "revert", None)
         if callable(revert_method_evolved):
             print(revert_method_evolved())
@@ -71,6 +71,7 @@ def main() -> None:
     """Main execution block."""
     try:
         test_healing()
+        print("")
         test_transform()
     except Exception as e:
         print(f"A critical error occurred: {e}")

@@ -11,7 +11,7 @@ from ex2 import (
 
 
 def run_tournament(
-    name: str, 
+    name: str,
     opponents: List[Tuple[CreatureFactory, BattleStrategy]]
 ) -> None:
     """Executes a tournament round-robin style."""
@@ -22,14 +22,14 @@ def run_tournament(
 
         for i in range(len(opponents)):
             for j in range(i + 1, len(opponents)):
-                print("* Battle *")
-                
+                print("\n* Battle *")
+
                 fact1, strat1 = opponents[i]
                 fact2, strat2 = opponents[j]
-                
+
                 c1 = fact1.create_base()
                 c2 = fact2.create_base()
-                
+
                 print(c1.describe())
                 print("vs.")
                 print(c2.describe())
@@ -37,7 +37,7 @@ def run_tournament(
 
                 strat1.act(c1)
                 strat2.act(c2)
-                
+
     except StrategyError as e:
         print(f"Battle error, aborting tournament: {e}")
     except Exception as e:
@@ -59,13 +59,13 @@ def main() -> None:
         (flame, normal),
         (healing, defensive)
     ])
-    print()
+    print("")
 
     run_tournament("Tournament 1 (error)", [
         (flame, aggressive),
         (healing, defensive)
     ])
-    print()
+    print("")
 
     run_tournament("Tournament 2 (multiple)", [
         (AquaFactory(), normal),

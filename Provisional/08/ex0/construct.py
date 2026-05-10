@@ -20,7 +20,8 @@ def matrix():
         print("matrix_env\\Scripts\\activate    # On Windows")
         print("\nThen run this program again.")
     else:
-        print(f"DEBUG: Virtual Environment Name: {os.path.basename(sys.prefix)}")
+        print(f"DEBUG: Virtual Environment Name:"
+              f" {os.path.basename(sys.prefix)}")
         print("\nMATRIX STATUS: Welcome to the construct\n")
         print(f"Current Python: {sys.executable}")
         print(f"Virtual Environment: {os.path.basename(sys.prefix)}")
