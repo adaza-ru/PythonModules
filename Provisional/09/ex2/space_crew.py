@@ -50,7 +50,8 @@ class SpaceMission(BaseModel):
         leaders = {Rank.COMMANDER, Rank.CAPTAIN}
         has_leader = any(member.rank in leaders for member in self.crew)
         if not has_leader:
-            raise ValueError("Mission must have at least one Commander or Captain")
+            raise ValueError("Mission must have at least "
+                             "one Commander or Captain")
 
         if self.duration_days > 365:
             experienced_count = sum(
