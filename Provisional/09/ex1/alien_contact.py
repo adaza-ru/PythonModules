@@ -1,11 +1,12 @@
+from __future__ import annotations
 from enum import Enum
 from datetime import datetime
-from typing import Optional, Self
+from typing import Optional
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
-class ContactType(str, Enum):
-    """Supported types of alien contact."""
+class ContactType(Enum):
+
     RADIO = "radio"
     VISUAL = "visual"
     PHYSICAL = "physical"
@@ -13,9 +14,7 @@ class ContactType(str, Enum):
 
 
 class AlienContact(BaseModel):
-    """
-    Model representing an alien contact report with cross-field validation.
-    """
+
     contact_id: str = Field(min_length=5, max_length=15)
     timestamp: datetime
     location: str = Field(min_length=3, max_length=100)
@@ -27,7 +26,7 @@ class AlienContact(BaseModel):
     is_verified: bool = False
 
     @model_validator(mode='after')
-    def validate_business_rules(self) -> Self:
+    def validate_business_rules(self) -> AlienContact:
         """
         Applies complex business logic after individual fields are validated.
         """
@@ -37,8 +36,11 @@ class AlienContact(BaseModel):
         if self.contact_type == ContactType.PHYSICAL and not self.is_verified:
             raise ValueError("Physical contact reports must be verified")
 
-        if self.contact_type == ContactType.TELEPATHIC and self.witness_count < 3:
-            raise ValueError("Telepathic contact requires at least 3 witnesses")
+        is_telepathic: bool = self.contact_type == ContactType.TELEPATHIC
+
+        if is_telepathic and self.witness_count < 3:
+            raise ValueError("Telepathic contact requires "
+                             "at least 3 witnesses")
 
         if self.signal_strength > 7.0 and not self.message_received:
             raise ValueError(
@@ -49,7 +51,7 @@ class AlienContact(BaseModel):
 
 
 def display_report(report: AlienContact) -> None:
-    """Prints a contact report in a clean format."""
+
     print(f"ID: {report.contact_id}")
     print(f"Type: {report.contact_type.value}")
     print(f"Location: {report.location}")
@@ -61,12 +63,12 @@ def display_report(report: AlienContact) -> None:
 
 
 def main() -> None:
-    """Demonstrates validation of alien contact reports."""
+
     print("Alien Contact Log Validation")
     print("=" * 40)
 
     try:
-        valid_radio = AlienContact(
+        valid_radio: AlienContact = AlienContact(
             contact_id="AC_2024_001",
             timestamp=datetime.now(),
             location="Area 51, Nevada",
@@ -82,36 +84,80 @@ def main() -> None:
     except ValidationError as e:
         print(f"Unexpected error in valid case: {e}")
 
-    print("=" * 40)
-    print("Expected validation errors:")
+    print("\n" + "=" * 40)
+    print("Expected validation errors:\n")
 
     try:
-        AlienContact(
-            contact_id="AC_TELE_99",
+
+        wrong_radio_1: AlienContact = AlienContact(
+            contact_id="AC_2024_001",
             timestamp=datetime.now(),
-            location="Remote Woods",
+            location="Area 51, Nevada",
             contact_type=ContactType.TELEPATHIC,
-            signal_strength=2.0,
-            duration_minutes=10,
-            witness_count=1
+            signal_strength=8.5,
+            duration_minutes=45,
+            witness_count=1,
+            message_received="Greetings from Zeta Reticuli"
         )
+        print("Wrong contact failed to fail.")
+        display_report(wrong_radio_1)
     except ValidationError as e:
         for error in e.errors():
-            print(f"- {error['msg']}")
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
 
     try:
-        AlienContact(
-            contact_id="AC_SIGNAL_X",
+        wrong_radio_2: AlienContact = AlienContact(
+            contact_id="BC_2024_001",
             timestamp=datetime.now(),
-            location="Satellite Dish A1",
+            location="Area 51, Nevada",
             contact_type=ContactType.RADIO,
-            signal_strength=9.9,
-            duration_minutes=5,
-            witness_count=2
+            signal_strength=8.5,
+            duration_minutes=45,
+            witness_count=5,
+            message_received="Greetings from Zeta Reticuli"
         )
+        print("Wrong contact failed to fail.")
+        display_report(wrong_radio_2)
     except ValidationError as e:
         for error in e.errors():
-            print(f"- {error['msg']}")
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
+
+    try:
+        wrong_radio_3: AlienContact = AlienContact(
+            contact_id="AC_2024_001",
+            timestamp=datetime.now(),
+            location="Area 51, Nevada",
+            contact_type=ContactType.PHYSICAL,
+            signal_strength=8.5,
+            duration_minutes=45,
+            witness_count=5,
+            message_received="Greetings from Zeta Reticuli"
+        )
+        print("Wrong contact failed to fail.")
+        display_report(wrong_radio_3)
+    except ValidationError as e:
+        for error in e.errors():
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
+
+    try:
+        wrong_radio_4: AlienContact = AlienContact(
+            contact_id="AC_2024_001",
+            timestamp=datetime.now(),
+            location="Area 51, Nevada",
+            contact_type=ContactType.RADIO,
+            signal_strength=8.5,
+            duration_minutes=45,
+            witness_count=5
+        )
+        print("Wrong contact failed to fail.")
+        display_report(wrong_radio_4)
+    except ValidationError as e:
+        for error in e.errors():
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
 
 
 if __name__ == "__main__":

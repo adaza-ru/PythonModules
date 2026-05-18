@@ -4,9 +4,7 @@ from pydantic import BaseModel, Field, ValidationError
 
 
 class SpaceStation(BaseModel):
-    """
-    Represents a space station with validated telemetry data.
-    """
+
     station_id: str = Field(min_length=3, max_length=10)
     name: str = Field(min_length=1, max_length=50)
     crew_size: int = Field(ge=1, le=20)
@@ -18,9 +16,7 @@ class SpaceStation(BaseModel):
 
 
 def display_station(station: SpaceStation) -> None:
-    """
-    Prints the station information in a readable format.
-    """
+
     status: str = "Operational" if station.is_operational else "Offline"
     print(f"ID: {station.station_id}")
     print(f"Name: {station.name}")
@@ -31,20 +27,18 @@ def display_station(station: SpaceStation) -> None:
 
 
 def main() -> None:
-    """
-    Demonstrates the creation of valid and invalid SpaceStation instances.
-    """
+
     print("Space Station Data Validation")
     print("=" * 40)
 
     try:
-        valid_station = SpaceStation(
+        valid_station: SpaceStation = SpaceStation(
             station_id="ISS001",
             name="International Space Station",
             crew_size=6,
             power_level=85.5,
             oxygen_level=92.3,
-            last_maintenance="2024-05-20T10:00:00"
+            last_maintenance=datetime.now()
         )
         print("Valid station created:")
         display_station(valid_station)
@@ -52,22 +46,23 @@ def main() -> None:
     except ValidationError as e:
         print(f"Unexpected error: {e}")
 
-    print("=" * 40)
+    print("\n" + "=" * 40)
     print("Expected validation error:")
 
     try:
-        SpaceStation(
-            station_id="MARS-01",
-            name="Mars Alpha Base",
+        wrong_station: SpaceStation = SpaceStation(
+            station_id="IS",
+            name="",
             crew_size=25,
-            power_level=50.0,
-            oxygen_level=45.0,
+            power_level=150.0,
+            oxygen_level=145.0,
             last_maintenance=datetime.now()
         )
+        print("Wrong station failed to fail.")
+        display_station(wrong_station)
     except ValidationError as e:
         for error in e.errors():
-            if error['loc'][0] == 'crew_size':
-                print(error['msg'])
+            print(f"Error in {error['loc'][0]}: {error['msg']}")
 
 
 if __name__ == "__main__":

@@ -1,11 +1,12 @@
+from __future__ import annotations
 from enum import Enum
 from datetime import datetime
-from typing import List, Self
+from typing import List
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
-class Rank(str, Enum):
-    """Crew ranks available for mission assignment."""
+class Rank(Enum):
+
     CADET = "cadet"
     OFFICER = "officer"
     LIEUTENANT = "lieutenant"
@@ -14,9 +15,7 @@ class Rank(str, Enum):
 
 
 class CrewMember(BaseModel):
-    """
-    Model representing an individual crew member.
-    """
+
     member_id: str = Field(min_length=3, max_length=10)
     name: str = Field(min_length=2, max_length=50)
     rank: Rank
@@ -27,9 +26,7 @@ class CrewMember(BaseModel):
 
 
 class SpaceMission(BaseModel):
-    """
-    Model representing a space mission with nested crew validation.
-    """
+
     mission_id: str = Field(min_length=5, max_length=15)
     mission_name: str = Field(min_length=3, max_length=100)
     destination: str = Field(min_length=3, max_length=50)
@@ -40,24 +37,24 @@ class SpaceMission(BaseModel):
     budget_millions: float = Field(ge=1.0, le=10000.0)
 
     @model_validator(mode='after')
-    def validate_mission_safety(self) -> Self:
-        """
-        Applies mission-wide safety requirements and crew composition rules.
-        """
+    def validate_mission_safety(self) -> SpaceMission:
+
         if not self.mission_id.startswith("M"):
             raise ValueError("Mission ID must start with 'M'")
 
         leaders = {Rank.COMMANDER, Rank.CAPTAIN}
         has_leader = any(member.rank in leaders for member in self.crew)
         if not has_leader:
-            raise ValueError("Mission must have at least "
-                             "one Commander or Captain")
+            raise ValueError(
+                "Mission must have at least one Commander or Captain"
+            )
 
+        min_experienced_required: int = (len(self.crew) + 1) // 2
         if self.duration_days > 365:
             experienced_count = sum(
                 1 for m in self.crew if m.years_experience >= 5
             )
-            if experienced_count < (len(self.crew) / 2):
+            if experienced_count < min_experienced_required:
                 raise ValueError(
                     "Long missions (> 365 days) need 50% experienced crew "
                     "(5+ years)"
@@ -70,7 +67,7 @@ class SpaceMission(BaseModel):
 
 
 def display_mission(mission: SpaceMission) -> None:
-    """Displays mission and crew details formatted clearly."""
+
     print(f"Mission: {mission.mission_name}")
     print(f"ID: {mission.mission_id}")
     print(f"Destination: {mission.destination}")
@@ -83,16 +80,16 @@ def display_mission(mission: SpaceMission) -> None:
 
 
 def main() -> None:
-    """Demonstrates valid and invalid space mission scenarios."""
+
     print("Space Mission Crew Validation")
-    print("=" * 41)
+    print("=" * 40)
 
     try:
         valid_mission = SpaceMission(
             mission_id="M2024_MARS",
             mission_name="Mars Colony Establishment",
             destination="Mars",
-            launch_date="2024-10-12T08:00:00",
+            launch_date=datetime.now(),
             duration_days=900,
             budget_millions=2500.0,
             crew=[
@@ -117,27 +114,127 @@ def main() -> None:
     except ValidationError as e:
         print(f"Unexpected error: {e}")
 
-    print("=" * 41)
+    print("\n" + "=" * 40)
     print("Expected validation error:")
 
     try:
-        SpaceMission(
-            mission_id="M_FAIL_01",
-            mission_name="Unmanned Test?",
-            destination="Moon",
+        wrong_mission_1: SpaceMission = SpaceMission(
+            mission_id="M2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
             launch_date=datetime.now(),
-            duration_days=10,
-            budget_millions=100.0,
+            duration_days=900,
+            budget_millions=2500.0,
             crew=[
                 CrewMember(
-                    member_id="C04", name="Newbie", rank=Rank.CADET,
-                    age=19, specialization="Cleaning", years_experience=0
+                    member_id="C03", name="Alice Johnson", rank=Rank.OFFICER,
+                    age=28, specialization="Engineering", years_experience=2
                 )
             ]
         )
+        print("Wrong mission failed to fail.")
+        display_mission(wrong_mission_1)
+
     except ValidationError as e:
         for error in e.errors():
-            print(error['msg'])
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
+
+    try:
+        wrong_mission_2: SpaceMission = SpaceMission(
+            mission_id="N2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
+            launch_date=datetime.now(),
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=[
+                CrewMember(
+                    member_id="C01", name="Sarah Connor", rank=Rank.COMMANDER,
+                    age=45, specialization="Mission Command",
+                    years_experience=15
+                ),
+                CrewMember(
+                    member_id="C02", name="John Smith", rank=Rank.LIEUTENANT,
+                    age=30, specialization="Navigation", years_experience=6
+                ),
+                CrewMember(
+                    member_id="C03", name="Alice Johnson", rank=Rank.OFFICER,
+                    age=28, specialization="Engineering", years_experience=2
+                )
+            ]
+        )
+        print("Wrong mission failed to fail.")
+        display_mission(wrong_mission_2)
+
+    except ValidationError as e:
+        for error in e.errors():
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
+
+    try:
+        wrong_mission_3: SpaceMission = SpaceMission(
+            mission_id="M2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
+            launch_date=datetime.now(),
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=[
+                CrewMember(
+                    member_id="C01", name="Sarah Connor", rank=Rank.COMMANDER,
+                    age=45, specialization="Mission Command",
+                    years_experience=1
+                ),
+                CrewMember(
+                    member_id="C02", name="John Smith", rank=Rank.LIEUTENANT,
+                    age=30, specialization="Navigation", years_experience=1
+                ),
+                CrewMember(
+                    member_id="C03", name="Alice Johnson", rank=Rank.OFFICER,
+                    age=28, specialization="Engineering", years_experience=2
+                )
+            ]
+        )
+        print("Wrong mission failed to fail.")
+        display_mission(wrong_mission_3)
+
+    except ValidationError as e:
+        for error in e.errors():
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
+
+    try:
+        wrong_mission_4: SpaceMission = SpaceMission(
+            mission_id="M2024_MARS",
+            mission_name="Mars Colony Establishment",
+            destination="Mars",
+            launch_date=datetime.now(),
+            duration_days=900,
+            budget_millions=2500.0,
+            crew=[
+                CrewMember(
+                    member_id="C01", name="Sarah Connor", rank=Rank.COMMANDER,
+                    age=45, specialization="Mission Command",
+                    years_experience=15, is_active=False
+                ),
+                CrewMember(
+                    member_id="C02", name="John Smith", rank=Rank.LIEUTENANT,
+                    age=30, specialization="Navigation", years_experience=6
+                ),
+                CrewMember(
+                    member_id="C03", name="Alice Johnson", rank=Rank.OFFICER,
+                    age=28, specialization="Engineering", years_experience=2
+                )
+            ]
+        )
+        print("Wrong mission failed to fail.")
+        display_mission(wrong_mission_4)
+
+    except ValidationError as e:
+        for error in e.errors():
+            msg = error['msg'].replace('Value error, ', '')
+            print(msg)
 
 
 if __name__ == "__main__":
