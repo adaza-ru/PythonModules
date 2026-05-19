@@ -17,7 +17,11 @@ def is_boss(target: str, power: int) -> bool:
     return target.lower() == "dragon" and power >= 50
 
 
-def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
+def spell_combiner(
+    spell1: Callable[[str, int], str],
+    spell2: Callable[[str, int], str]
+) -> Callable[[str, int], tuple[str, str]]:
+
     if not (callable(spell1) and callable(spell2)):
         raise TypeError("Both arguments must be callable functions.")
 
@@ -27,7 +31,11 @@ def spell_combiner(spell1: Callable, spell2: Callable) -> Callable:
     return combined_spell
 
 
-def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
+def power_amplifier(
+    base_spell: Callable[[str, int], str],
+    multiplier: int
+) -> Callable[[str, int], str]:
+
     if not callable(base_spell):
         raise TypeError("base_spell must be a callable function.")
     if not isinstance(multiplier, (int, float)):
@@ -39,7 +47,11 @@ def power_amplifier(base_spell: Callable, multiplier: int) -> Callable:
     return amplified_spell
 
 
-def conditional_caster(condition: Callable, spell: Callable) -> Callable:
+def conditional_caster(
+    condition: Callable[[str, int], bool],
+    spell: Callable[[str, int], str]
+) -> Callable[[str, int], str]:
+
     if not (callable(condition) and callable(spell)):
         raise TypeError("Both condition and spell must be callable functions.")
 
@@ -51,7 +63,10 @@ def conditional_caster(condition: Callable, spell: Callable) -> Callable:
     return conditional_spell
 
 
-def spell_sequence(spells: list[Callable]) -> Callable:
+def spell_sequence(
+    spells: list[Callable[[str, int], str]]
+) -> Callable[[str, int], list[str]]:
+
     if not isinstance(spells, list) or not all(callable(s) for s in spells):
         raise TypeError("spells must be a list of callable functions.")
 
