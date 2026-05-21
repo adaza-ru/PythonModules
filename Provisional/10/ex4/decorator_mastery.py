@@ -21,6 +21,7 @@ def power_validator(
 ) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+
         @functools.wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             power = kwargs.get("power")
@@ -33,6 +34,7 @@ def power_validator(
                 if power < min_power:
                     return "Insufficient power for this spell"
             return func(*args, **kwargs)
+
         return wrapper
 
     return decorator
