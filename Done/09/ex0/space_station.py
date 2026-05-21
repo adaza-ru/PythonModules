@@ -24,6 +24,9 @@ def display_station(station: SpaceStation) -> None:
     print(f"Power: {station.power_level}%")
     print(f"Oxygen: {station.oxygen_level}%")
     print(f"Status: {status}")
+    print(f"Last maintenance: {station.last_maintenance}")
+    if station.notes:
+        print(f"Notes: {station.notes}")
 
 
 def main() -> None:
@@ -38,7 +41,8 @@ def main() -> None:
             crew_size=6,
             power_level=85.5,
             oxygen_level=92.3,
-            last_maintenance=datetime.now()
+            last_maintenance=datetime.now(),
+            notes="Very Important Notes"
         )
         print("Valid station created:")
         display_station(valid_station)

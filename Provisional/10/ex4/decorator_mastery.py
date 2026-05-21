@@ -29,13 +29,12 @@ def power_validator(
                     power = args[2]
                 elif len(args) >= 1:
                     power = args[0]
-
             if power is not None and isinstance(power, int):
                 if power < min_power:
                     return "Insufficient power for this spell"
-
             return func(*args, **kwargs)
         return wrapper
+
     return decorator
 
 
