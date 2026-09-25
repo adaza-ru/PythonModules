@@ -46,9 +46,9 @@ python-modules/
 ├── README.md
 ├── highlights/
 │   ├── design-patterns/
-│   │   ├── polymorphism/           # abstract classes & polymorphic dispatch
-│   │   └── factories-and-strategy/ # abstract factory, capabilities, strategy pattern
-│   └── functional-programming/     # closures, functools, decorators
+│   │   ├── 05-polymorphism/           # abstract classes & polymorphic dispatch
+│   │   └── 07-factories-and-strategy/ # abstract factory, capabilities, strategy pattern
+│   └── 10-functional-programming/     # closures, functools, decorators
 └── exercises/
     ├── 00-python-fundamentals/
     ├── 01-oop-basics/
